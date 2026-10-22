@@ -72,7 +72,7 @@ Excel (full analysis + forecast model) ──► PBI tables ─┘
 |---|---|
 | **MySQL** | Loads the raw data, runs import checks, then rebuilds the funnel, drivers and cohort triangle in SQL. Final views feed Power BI. |
 | **Excel** | The full original analysis, plus the forecast model (chain-ladder and holdings). A `PBI_Forecast` tab exposes the forecast as tidy tables. |
-| **Power BI** | Imports the SQL views and the Excel forecast tables. 29 DAX measures, a what-if scenario parameter, a DAX-coloured heatmap and a custom theme. |
+| **Power BI** | Imports the SQL views and the Excel forecast tables. 27 DAX measures, a what-if scenario parameter, a gradient-formatted cohort heatmap and a custom theme. |
 
 Every headline number reconciles across all three tools:
 
