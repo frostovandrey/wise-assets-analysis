@@ -1,0 +1,119 @@
+table Customers
+	lineageTag: aea20312-bf83-49a5-906c-ce3d153bb06a
+
+	column profile_id
+		dataType: int64
+		formatString: 0
+		lineageTag: 1a071249-3581-4b0d-8b77-b787eab8557a
+		summarizeBy: none
+		sourceColumn: profile_id
+
+		annotation SummarizationSetBy = User
+
+	column class
+		dataType: string
+		lineageTag: 5e8eeb0d-43c3-4349-a878-3515bce4fd06
+		summarizeBy: none
+		sourceColumn: class
+
+		annotation SummarizationSetBy = Automatic
+
+	column cohort
+		dataType: string
+		lineageTag: 788d6a19-13be-4ab6-911e-8bbfcc8796d3
+		summarizeBy: none
+		sourceColumn: cohort
+
+		annotation SummarizationSetBy = Automatic
+
+	column is_funded
+		dataType: int64
+		formatString: 0
+		lineageTag: 91ac6c87-8376-43ae-8bcb-d0c3831441d7
+		summarizeBy: sum
+		sourceColumn: is_funded
+
+		annotation SummarizationSetBy = Automatic
+
+	column is_investor
+		dataType: int64
+		formatString: 0
+		lineageTag: dba31d10-75f4-4cd3-a36e-e43b9508b84d
+		summarizeBy: sum
+		sourceColumn: is_investor
+
+		annotation SummarizationSetBy = Automatic
+
+	column used_send
+		dataType: int64
+		formatString: 0
+		lineageTag: ae68ab93-c883-48e6-98bc-9195bd35710e
+		summarizeBy: sum
+		sourceColumn: used_send
+
+		annotation SummarizationSetBy = Automatic
+
+	column used_account_details
+		dataType: int64
+		formatString: 0
+		lineageTag: e6237cfb-8bc1-475f-a651-1bae11094986
+		summarizeBy: sum
+		sourceColumn: used_account_details
+
+		annotation SummarizationSetBy = Automatic
+
+	column used_direct_debit
+		dataType: int64
+		formatString: 0
+		lineageTag: 9dce8a85-86c5-482a-8f1f-f5559e0fb6c3
+		summarizeBy: sum
+		sourceColumn: used_direct_debit
+
+		annotation SummarizationSetBy = Automatic
+
+	column used_card
+		dataType: int64
+		formatString: 0
+		lineageTag: d80b8e1f-6e7d-4fc3-91ff-822dd3bf1582
+		summarizeBy: sum
+		sourceColumn: used_card
+
+		annotation SummarizationSetBy = Automatic
+
+	column n_products
+		dataType: int64
+		formatString: 0
+		lineageTag: 6f71d927-02bc-45d2-ba8e-a35d2b08cee4
+		summarizeBy: none
+		sourceColumn: n_products
+
+		annotation SummarizationSetBy = User
+
+	column months_to_invest
+		dataType: int64
+		formatString: 0
+		lineageTag: a029c037-bee0-42fb-b6c3-e69f0e288536
+		summarizeBy: sum
+		sourceColumn: months_to_invest
+
+		annotation SummarizationSetBy = Automatic
+
+	column cash_category
+		dataType: string
+		lineageTag: 5361c850-9a4e-4fd4-ab55-0d18760cd575
+		summarizeBy: none
+		sourceColumn: cash_category
+
+		annotation SummarizationSetBy = Automatic
+
+	partition Customers = m
+		mode: import
+		source =
+				let
+				    Source = MySQL.Database("localhost:3306", "wise_assets", [ReturnSingleDatabase=true]),
+				    wise_assets_vw_customers = Source{[Schema="wise_assets",Item="vw_customers"]}[Data]
+				in
+				    wise_assets_vw_customers
+
+	annotation PBI_ResultType = Table
+

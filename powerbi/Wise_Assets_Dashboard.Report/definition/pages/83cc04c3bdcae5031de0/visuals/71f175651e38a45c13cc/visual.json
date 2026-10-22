@@ -1,0 +1,85 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.14.0/schema.json",
+  "name": "71f175651e38a45c13cc",
+  "position": {
+    "x": 1170,
+    "y": 770,
+    "z": 6000,
+    "height": 245,
+    "width": 710,
+    "tabOrder": 6000
+  },
+  "visual": {
+    "visualType": "textbox",
+    "objects": {
+      "general": [
+        {
+          "properties": {
+            "paragraphs": [
+              {
+                "textRuns": [
+                  {
+                    "value": "Watch-outs",
+                    "textStyle": {
+                      "fontSize": "16pt",
+                      "color": "#163300",
+                      "fontWeight": "bold"
+                    }
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "•  Interest holdings are concentrated: about five customers hold 61% of the interest book.",
+                    "textStyle": {
+                      "fontSize": "14pt",
+                      "color": "#2A3324"
+                    }
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "•  225 investors is a small base, so thin cuts are directional only.",
+                    "textStyle": {
+                      "fontSize": "14pt",
+                      "color": "#2A3324"
+                    }
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "•  Holdings cover Jan-Jun 2023 joiners only; future signups would add to them.",
+                    "textStyle": {
+                      "fontSize": "14pt",
+                      "color": "#2A3324"
+                    }
+                  }
+                ]
+              }
+            ]
+          }
+        }
+      ]
+    },
+    "visualContainerObjects": {
+      "title": [
+        {
+          "properties": {
+            "show": {
+              "expr": {
+                "Literal": {
+                  "Value": "false"
+                }
+              }
+            }
+          }
+        }
+      ]
+    }
+  }
+}

@@ -1,0 +1,75 @@
+table 'Customer forecast'
+	lineageTag: 8ff90c98-9bfb-4ca5-9e47-da77dfd63520
+
+	column month
+		dataType: dateTime
+		formatString: mmm yyyy
+		lineageTag: ae93db5f-f13c-44b6-88e6-8e32faf07b16
+		summarizeBy: none
+		sourceColumn: month
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation UnderlyingDateTimeDataType = Date
+
+	column actual
+		dataType: int64
+		formatString: 0
+		lineageTag: e818d6d7-c0fa-4647-8d09-7d9e4b9ab3d4
+		summarizeBy: sum
+		sourceColumn: actual
+
+		annotation SummarizationSetBy = Automatic
+
+	column conservative
+		dataType: double
+		lineageTag: 2a28f65e-03ba-4460-82db-aebf234ba705
+		summarizeBy: sum
+		sourceColumn: conservative
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column base
+		dataType: double
+		lineageTag: 30f95cd5-0e29-4f8a-a07b-022a72d09953
+		summarizeBy: sum
+		sourceColumn: base
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column optimistic
+		dataType: double
+		lineageTag: 6eafdc1d-bfb1-49a1-b655-ef5fcd69b320
+		summarizeBy: sum
+		sourceColumn: optimistic
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column whole_base
+		dataType: double
+		lineageTag: f25b46fc-f4db-44ce-8f72-e5f86a11f9b8
+		summarizeBy: sum
+		sourceColumn: whole_base
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	partition 'Customer forecast' = m
+		mode: import
+		source =
+				let
+				    Source = Excel.Workbook(File.Contents("C:\Users\frost\Downloads\Wise_Assets_Analysis_Andrii (3).xlsx"), null, true),
+				    tbl_customers_fcst_Table = Source{[Item="tbl_customers_fcst",Kind="Table"]}[Data],
+				    #"Changed Type" = Table.TransformColumnTypes(tbl_customers_fcst_Table,{{"month", type date}, {"actual", Int64.Type}, {"conservative", type number}, {"base", type number}, {"optimistic", type number}, {"whole_base", type number}})
+				in
+				    #"Changed Type"
+
+	annotation PBI_ResultType = Table
+

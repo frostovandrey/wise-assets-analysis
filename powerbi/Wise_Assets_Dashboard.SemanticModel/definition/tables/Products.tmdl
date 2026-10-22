@@ -1,0 +1,41 @@
+/// Helper list of products for the "conversion by product used" chart
+table Products
+	lineageTag: 08798fd0-3811-4b56-8db4-30de860ca106
+
+	column Product
+		dataType: string
+		lineageTag: 1a5807eb-0973-4310-ad87-2b12e15ec4ac
+		summarizeBy: none
+		isNameInferred
+		sourceColumn: [Product]
+		sortByColumn: 'Sort Order'
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Sort Order'
+		dataType: int64
+		isHidden
+		formatString: 0
+		lineageTag: 28276991-50c0-4c1e-8e04-73bb8a341128
+		summarizeBy: none
+		isNameInferred
+		sourceColumn: [Sort Order]
+
+		annotation SummarizationSetBy = Automatic
+
+	partition Products = calculated
+		mode: import
+		source =
+				DATATABLE(
+				    "Product", STRING,
+				    "Sort Order", INTEGER,
+				    {
+				        {"Direct debit", 1},
+				        {"Account details", 2},
+				        {"Card", 3},
+				        {"Sent money abroad", 4}
+				    }
+				)
+
+	annotation PBI_Id = 5b99388ac9ab45a8803511a9c0b32a26
+

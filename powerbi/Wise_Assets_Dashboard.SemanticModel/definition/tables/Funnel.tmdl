@@ -1,0 +1,60 @@
+table Funnel
+	lineageTag: e74d57ed-e7bd-4c67-962c-dff8a26e321d
+
+	column step_num
+		dataType: int64
+		formatString: 0
+		lineageTag: 43f9ad78-a0c6-4126-893d-73dff41b61cc
+		summarizeBy: none
+		sourceColumn: step_num
+
+		annotation SummarizationSetBy = User
+
+	column step
+		dataType: string
+		lineageTag: 317f25ea-a874-4a91-844b-159924b610c9
+		summarizeBy: none
+		sourceColumn: step
+
+		annotation SummarizationSetBy = Automatic
+
+	column customers
+		dataType: int64
+		formatString: 0
+		lineageTag: 9a4e7ebb-e35c-4475-a8c5-fcd1ec08f321
+		summarizeBy: sum
+		sourceColumn: customers
+
+		annotation SummarizationSetBy = Automatic
+
+	column pct_of_signups
+		dataType: double
+		lineageTag: 3fa548aa-1afb-48b0-8811-6c6f5061fae6
+		summarizeBy: sum
+		sourceColumn: pct_of_signups
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column step_conversion
+		dataType: double
+		lineageTag: 90844030-e134-49a0-b149-a678a032c1b4
+		summarizeBy: sum
+		sourceColumn: step_conversion
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	partition Funnel = m
+		mode: import
+		source =
+				let
+				    Source = MySQL.Database("localhost:3306", "wise_assets", [ReturnSingleDatabase=true]),
+				    wise_assets_vw_funnel = Source{[Schema="wise_assets",Item="vw_funnel"]}[Data]
+				in
+				    wise_assets_vw_funnel
+
+	annotation PBI_ResultType = Table
+

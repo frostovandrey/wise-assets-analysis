@@ -1,0 +1,74 @@
+table 'Holdings forecast'
+	lineageTag: e8b2ebd7-ff23-4f80-8c22-6bfea6821779
+
+	column month
+		dataType: dateTime
+		formatString: mmm yyyy
+		lineageTag: a13c5999-273b-45f2-96cf-24b69561943d
+		summarizeBy: none
+		sourceColumn: month
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation UnderlyingDateTimeDataType = Date
+
+	column status
+		dataType: string
+		lineageTag: 8a959f95-0f06-4c47-bdac-90969d14da16
+		summarizeBy: none
+		sourceColumn: status
+
+		annotation SummarizationSetBy = Automatic
+
+	column equity
+		dataType: double
+		lineageTag: 1ca42843-9eeb-4d52-82f6-c7c043e96cbd
+		summarizeBy: sum
+		sourceColumn: equity
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column interest
+		dataType: double
+		lineageTag: cfdb0cb0-86f3-4817-8a39-a915ef5de21f
+		summarizeBy: sum
+		sourceColumn: interest
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column cash
+		dataType: double
+		lineageTag: 8b0f2269-5875-46f0-bff2-69f8713bb615
+		summarizeBy: sum
+		sourceColumn: cash
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column total
+		dataType: double
+		lineageTag: c59ef7cf-c4bb-4427-8cfe-cfcc4093f366
+		summarizeBy: sum
+		sourceColumn: total
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	partition 'Holdings forecast' = m
+		mode: import
+		source =
+				let
+				    Source = Excel.Workbook(File.Contents("C:\Users\frost\Downloads\Wise_Assets_Analysis_Andrii (3).xlsx"), null, true),
+				    tbl_holdings_fcst_Table = Source{[Item="tbl_holdings_fcst",Kind="Table"]}[Data],
+				    #"Changed Type" = Table.TransformColumnTypes(tbl_holdings_fcst_Table,{{"month", type date}, {"status", type text}, {"equity", type number}, {"interest", type number}, {"cash", type number}, {"total", type number}})
+				in
+				    #"Changed Type"
+
+	annotation PBI_ResultType = Table
+

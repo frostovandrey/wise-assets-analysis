@@ -1,0 +1,85 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.14.0/schema.json",
+  "name": "aab44190a272440e7219",
+  "position": {
+    "x": 1170,
+    "y": 750,
+    "z": 7000,
+    "height": 270,
+    "width": 710,
+    "tabOrder": 7000
+  },
+  "visual": {
+    "visualType": "textbox",
+    "objects": {
+      "general": [
+        {
+          "properties": {
+            "paragraphs": [
+              {
+                "textRuns": [
+                  {
+                    "value": "What it means for Wise",
+                    "textStyle": {
+                      "fontWeight": "bold",
+                      "fontSize": "16pt",
+                      "color": "#163300"
+                    }
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "•  Investing tracks how much Wise is someone's main account, not how long they have been a customer.",
+                    "textStyle": {
+                      "fontSize": "14pt",
+                      "color": "#2a3324"
+                    }
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "•  Direct debit users convert at 8.1%; customers who only send money abroad at 0.7%.",
+                    "textStyle": {
+                      "fontSize": "14pt",
+                      "color": "#2a3324"
+                    }
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "•  Best moment to promote Assets: right after a top-up, a direct debit setup, or when cash passes £1k.",
+                    "textStyle": {
+                      "fontSize": "14pt",
+                      "color": "#2a3324"
+                    }
+                  }
+                ]
+              }
+            ]
+          }
+        }
+      ]
+    },
+    "visualContainerObjects": {
+      "title": [
+        {
+          "properties": {
+            "show": {
+              "expr": {
+                "Literal": {
+                  "Value": "false"
+                }
+              }
+            }
+          }
+        }
+      ]
+    }
+  }
+}

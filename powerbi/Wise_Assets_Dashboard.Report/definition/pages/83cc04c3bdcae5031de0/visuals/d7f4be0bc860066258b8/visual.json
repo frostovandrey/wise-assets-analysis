@@ -1,0 +1,129 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.14.0/schema.json",
+  "name": "d7f4be0bc860066258b8",
+  "position": {
+    "x": 40,
+    "y": 140,
+    "z": 2000,
+    "height": 160,
+    "width": 1840,
+    "tabOrder": 2000
+  },
+  "visual": {
+    "visualType": "cardVisual",
+    "query": {
+      "queryState": {
+        "Data": {
+          "projections": [
+            {
+              "field": {
+                "Measure": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "_Measures"
+                    }
+                  },
+                  "Property": "Investors Jan-24"
+                }
+              },
+              "queryRef": "_Measures.Investors Jan-24",
+              "nativeQueryRef": "Investors Jan-24",
+              "displayName": "Investors today (Jan-24)"
+            },
+            {
+              "field": {
+                "Measure": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "_Measures"
+                    }
+                  },
+                  "Property": "Investors Jan-25"
+                }
+              },
+              "queryRef": "_Measures.Investors Jan-25",
+              "nativeQueryRef": "Investors Jan-25",
+              "displayName": "Forecast Jan-25 (sample)"
+            },
+            {
+              "field": {
+                "Measure": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "_Measures"
+                    }
+                  },
+                  "Property": "Growth to Jan-25"
+                }
+              },
+              "queryRef": "_Measures.Growth to Jan-25",
+              "nativeQueryRef": "Growth to Jan-25",
+              "displayName": "Growth in 12 months"
+            },
+            {
+              "field": {
+                "Measure": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "_Measures"
+                    }
+                  },
+                  "Property": "Whole Base Jan-25 (label)"
+                }
+              },
+              "queryRef": "_Measures.Whole Base Jan-25 (label)",
+              "nativeQueryRef": "Whole Base Jan-25 (label)",
+              "displayName": "Whole customer base, Jan-25"
+            },
+            {
+              "field": {
+                "Measure": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "_Measures"
+                    }
+                  },
+                  "Property": "Holdings Jun-24"
+                }
+              },
+              "queryRef": "_Measures.Holdings Jun-24",
+              "nativeQueryRef": "Holdings Jun-24",
+              "displayName": "Total holdings, Jun-24"
+            },
+            {
+              "field": {
+                "Measure": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "_Measures"
+                    }
+                  },
+                  "Property": "Assets Share Jun-24"
+                }
+              },
+              "queryRef": "_Measures.Assets Share Jun-24",
+              "nativeQueryRef": "Assets Share Jun-24",
+              "displayName": "Assets share of holdings"
+            }
+          ]
+        }
+      }
+    },
+    "visualContainerObjects": {
+      "title": [
+        {
+          "properties": {
+            "show": {
+              "expr": {
+                "Literal": {
+                  "Value": "false"
+                }
+              }
+            }
+          }
+        }
+      ]
+    },
+    "drillFilterOtherVisuals": true
+  }
+}

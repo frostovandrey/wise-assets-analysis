@@ -1,0 +1,24 @@
+/// What-if parameter: scales new-investor growth after Jan 2024 in the base forecast
+table 'Conversion Uplift'
+	lineageTag: b4d85d0d-8a5d-401a-8b0e-13a7439def95
+
+	column 'Conversion Uplift'
+		dataType: double
+		formatString: +0%;-0%;0%
+		lineageTag: ca7ec559-9be6-4efb-8e62-b89da9bf0362
+		summarizeBy: none
+		sourceColumn: [Value]
+
+		extendedProperty ParameterMetadata =
+				{
+				  "version": 0
+				}
+
+		annotation SummarizationSetBy = User
+
+	partition 'Conversion Uplift' = calculated
+		mode: import
+		source = SELECTCOLUMNS(GENERATESERIES(-5, 5, 1), "Value", [Value] / 10)
+
+	annotation PBI_Id = caa838dc9de343e69a18197381976a6c
+

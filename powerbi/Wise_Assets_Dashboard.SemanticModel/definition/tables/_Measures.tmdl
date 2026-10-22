@@ -1,0 +1,280 @@
+table _Measures
+	lineageTag: 72d10f59-0af9-4986-92b2-5557c36997bc
+
+	/// All customers in the sample (one row per customer)
+	measure 'Total Customers' = COUNTROWS(Customers)
+		formatString: #,0
+		displayFolder: Overview
+		lineageTag: 4c22c285-e956-4609-8bc5-66b82d57909a
+
+	/// Customers who made at least one Assets investment
+	measure Investors = SUM(Customers[is_investor])
+		formatString: #,0
+		displayFolder: Overview
+		lineageTag: ddc7975c-9398-4b98-b9c0-7de2976872c1
+
+	/// Customers who topped up their balance
+	measure 'Funded Customers' = SUM(Customers[is_funded])
+		formatString: #,0
+		displayFolder: Overview
+		lineageTag: a85075c9-8de8-4731-bd4e-392b6fabe12a
+
+	/// Investors out of all customers
+	measure 'Conversion %' = DIVIDE([Investors], [Total Customers])
+		formatString: 0.00%;-0.00%;0.00%
+		displayFolder: Overview
+		lineageTag: ffa22f20-ee19-41e4-a94d-53bca35bc4a1
+
+	/// Funded customers out of all customers
+	measure 'Funded %' = DIVIDE([Funded Customers], [Total Customers])
+		formatString: 0.00%;-0.00%;0.00%
+		displayFolder: Overview
+		lineageTag: 51f6e3d7-905b-44ff-8087-51a1cc7f1d72
+
+	/// Investors out of funded customers (the fairer rate: you cannot invest without money in the account)
+	measure 'Funded Conversion %' = DIVIDE([Investors], [Funded Customers])
+		formatString: 0.00%;-0.00%;0.00%
+		displayFolder: Overview
+		lineageTag: c27216ba-4d7b-41e1-9d82-10336a8d588f
+
+	/// Customers reaching each funnel step. Calculated from Customers so it reacts to slicers (the Funnel table only provides the step names). Steps 2 and 3 equal steps 1 and 4 in this data, so the funnel visual shows steps 1, 4 and 5.
+	measure 'Funnel Customers' =
+			VAR _step = SELECTEDVALUE(Funnel[step_num])
+			RETURN
+			    SWITCH(
+			        _step,
+			        1, [Total Customers],
+			        2, [Total Customers],
+			        3, [Funded Customers],
+			        4, [Funded Customers],
+			        5, [Investors]
+			    )
+		formatString: #,0
+		displayFolder: Overview
+		lineageTag: d015cd93-2764-4d33-a6be-28eace161f19
+
+	/// Conversion % among customers who ever used each product
+	measure 'Conversion by Product' =
+			SWITCH(
+			    SELECTEDVALUE(Products[Product]),
+			    "Direct debit",      CALCULATE([Conversion %], Customers[used_direct_debit] = 1),
+			    "Account details",   CALCULATE([Conversion %], Customers[used_account_details] = 1),
+			    "Card",              CALCULATE([Conversion %], Customers[used_card] = 1),
+			    "Sent money abroad", CALCULATE([Conversion %], Customers[used_send] = 1)
+			)
+		formatString: 0.00%;-0.00%;0.00%
+		displayFolder: Drivers
+		lineageTag: ecbb5d4a-7ace-43c7-a2dc-39a2436309d6
+
+	/// Share of a signup cohort that had invested by a given age (months since joining)
+	measure 'Cumulative Conversion %' =
+			DIVIDE(
+			    SUM('Cohort Triangle'[cum_investors]),
+			    SUM('Cohort Triangle'[cohort_size])
+			)
+		formatString: 0.00%;-0.00%;0.00%
+		displayFolder: Cohorts
+		lineageTag: 146caf2e-6a4d-4852-9f79-39e53020caf4
+
+	/// Background colour for the cohort heatmap: pale green to lime to forest green, scaled to the highest cell
+	measure 'Heatmap Colour' =
+			VAR _v = [Cumulative Conversion %]
+			VAR _max =
+			    MAXX(
+			        ALL('Cohort Triangle'),
+			        DIVIDE('Cohort Triangle'[cum_investors], 'Cohort Triangle'[cohort_size])
+			    )
+			VAR _t = DIVIDE(_v, _max)
+			VAR _low = _t <= 0.5
+			VAR _k = IF(_low, _t * 2, (_t - 0.5) * 2)
+			-- three colour stops: #F1F8EA -> #9FE870 -> #163300
+			VAR _r = ROUND(IF(_low, 241 + (159 - 241) * _k, 159 + (22 - 159) * _k), 0)
+			VAR _g = ROUND(IF(_low, 248 + (232 - 248) * _k, 232 + (51 - 232) * _k), 0)
+			VAR _b = ROUND(IF(_low, 234 + (112 - 234) * _k, 112 + (0 - 112) * _k), 0)
+			VAR _hex = "0123456789ABCDEF"
+			RETURN
+			    IF(
+			        ISBLANK(_v),
+			        BLANK(),
+			        "#"
+			            & MID(_hex, INT(_r / 16) + 1, 1) & MID(_hex, MOD(_r, 16) + 1, 1)
+			            & MID(_hex, INT(_g / 16) + 1, 1) & MID(_hex, MOD(_g, 16) + 1, 1)
+			            & MID(_hex, INT(_b / 16) + 1, 1) & MID(_hex, MOD(_b, 16) + 1, 1)
+			    )
+		displayFolder: Cohorts
+		lineageTag: 2b2d8a4b-8fda-42f3-8a34-d91543b53bc7
+
+	/// White text on dark heatmap cells, dark green text on light ones
+	measure 'Heatmap Font Colour' =
+			VAR _v = [Cumulative Conversion %]
+			VAR _max =
+			    MAXX(
+			        ALL('Cohort Triangle'),
+			        DIVIDE('Cohort Triangle'[cum_investors], 'Cohort Triangle'[cohort_size])
+			    )
+			RETURN
+			    IF(ISBLANK(_v), BLANK(), IF(DIVIDE(_v, _max) > 0.6, "#FFFFFF", "#163300"))
+		displayFolder: Cohorts
+		lineageTag: 8ebf0a7c-726a-412f-bccc-c6364b79961b
+
+	/// Selected scenario adjustment (0% when nothing is selected)
+	measure 'Uplift %' = SELECTEDVALUE('Conversion Uplift'[Conversion Uplift], 0)
+		formatString: +0%;-0%;0%
+		displayFolder: Forecast
+		lineageTag: 3570e3d6-5551-48d8-936e-a5aa243f7fe2
+
+	/// Cumulative Assets customers in the sample, actual (to Jan 2024)
+	measure 'Actual Investors' = SUM('Customer forecast'[actual])
+		formatString: #,0
+		displayFolder: Forecast
+		lineageTag: 76f84694-a1ae-456e-9c57-aef39d3d0814
+
+	/// Chain-ladder forecast, growth fades fast after month 12 (decay 0.7)
+	measure 'Forecast Conservative' = SUM('Customer forecast'[conservative])
+		formatString: #,0
+		displayFolder: Forecast
+		lineageTag: 932c151d-8a20-45a0-a0e6-23cb0337fdcd
+
+	/// Chain-ladder forecast, growth never fades after month 12 (decay 1.0)
+	measure 'Forecast Optimistic' = SUM('Customer forecast'[optimistic])
+		formatString: #,0
+		displayFolder: Forecast
+		lineageTag: d5e956ea-4d93-4b8f-a883-465b9e449e70
+
+	/// Base case forecast (decay 0.9), with growth after Jan 2024 scaled by the selected uplift
+	measure 'Forecast Base (what-if)' =
+			VAR _anchorDate = DATE(2024, 1, 1)
+			VAR _anchor =
+			    CALCULATE(
+			        SUM('Customer forecast'[actual]),
+			        REMOVEFILTERS('Customer forecast'),
+			        'Customer forecast'[month] = _anchorDate
+			    )
+			VAR _base = SUM('Customer forecast'[base])
+			RETURN
+			    IF(
+			        ISBLANK(_base),
+			        BLANK(),
+			        IF(
+			            MAX('Customer forecast'[month]) <= _anchorDate,
+			            _base,
+			            _anchor + (_base - _anchor) * (1 + [Uplift %])
+			        )
+			    )
+		formatString: #,0
+		displayFolder: Forecast
+		lineageTag: 8d92950e-92dd-4554-aea7-0c8ff3b23e32
+
+	/// Assets customers across the whole 2023-onward customer base (base case), growth after Jan 2024 scaled by the selected uplift
+	measure 'Whole Base (what-if)' =
+			VAR _anchorDate = DATE(2024, 1, 1)
+			VAR _anchor =
+			    CALCULATE(
+			        SUM('Customer forecast'[whole_base]),
+			        REMOVEFILTERS('Customer forecast'),
+			        'Customer forecast'[month] = _anchorDate
+			    )
+			VAR _wb = SUM('Customer forecast'[whole_base])
+			RETURN
+			    IF(
+			        ISBLANK(_wb),
+			        BLANK(),
+			        IF(
+			            MAX('Customer forecast'[month]) <= _anchorDate,
+			            _wb,
+			            _anchor + (_wb - _anchor) * (1 + [Uplift %])
+			        )
+			    )
+		formatString: #,0
+		displayFolder: Forecast
+		lineageTag: 1da086dc-2964-4ea5-a827-24a40fb0787d
+
+	/// Actual Assets customers in the sample at the last month of data
+	measure 'Investors Jan-24' = CALCULATE([Actual Investors], 'Customer forecast'[month] = DATE(2024, 1, 1))
+		formatString: #,0
+		displayFolder: Forecast
+		lineageTag: d60a6ea5-f7e5-463a-8d33-a539d496055d
+
+	/// Forecast Assets customers in the sample in Jan 2025 (base case, with scenario)
+	measure 'Investors Jan-25' = CALCULATE([Forecast Base (what-if)], 'Customer forecast'[month] = DATE(2025, 1, 1))
+		formatString: #,0
+		displayFolder: Forecast
+		lineageTag: 7ab0c7b1-1334-4242-ba1c-2865b38b3b50
+
+	/// Growth in Assets customers from Jan 2024 to Jan 2025
+	measure 'Growth to Jan-25' = DIVIDE([Investors Jan-25], [Investors Jan-24]) - 1
+		formatString: +0%;-0%;0%
+		displayFolder: Forecast
+		lineageTag: 965c199f-05d2-4130-b960-6ab632e965c7
+
+	/// Forecast Assets customers across the whole customer base in Jan 2025
+	measure 'Whole Base Jan-25' = CALCULATE([Whole Base (what-if)], 'Customer forecast'[month] = DATE(2025, 1, 1))
+		formatString: #,0
+		displayFolder: Forecast
+		lineageTag: 56c68e82-9250-4ad4-8318-7c922be3e2bb
+
+	/// Cash balances, £ millions (all customers)
+	measure 'Cash £m' = DIVIDE(SUM('Holdings forecast'[cash]), 1000000)
+		formatString: #,0.0
+		displayFolder: Forecast
+		lineageTag: c5af8dc9-5846-4303-ab8c-8930b7a20667
+
+	/// Interest (money market) holdings, £ millions (all customers)
+	measure 'Interest £m' = DIVIDE(SUM('Holdings forecast'[interest]), 1000000)
+		formatString: #,0.0
+		displayFolder: Forecast
+		lineageTag: 8dbd4fd8-8ed5-47a9-b556-d84452b8c3a2
+
+	/// Equity holdings, £ millions (all customers)
+	measure 'Equity £m' = DIVIDE(SUM('Holdings forecast'[equity]), 1000000)
+		formatString: #,0.0
+		displayFolder: Forecast
+		lineageTag: 1785ae13-f25e-418a-8c6b-e64de05b676a
+
+	/// Equity + interest as a share of all holdings
+	measure 'Assets Share %' =
+			DIVIDE(
+			    SUM('Holdings forecast'[equity]) + SUM('Holdings forecast'[interest]),
+			    SUM('Holdings forecast'[total])
+			)
+		formatString: 0.0%;-0.0%;0.0%
+		displayFolder: Forecast
+		lineageTag: e673f2e1-7cf0-46ff-8dce-7eaabb7094e9
+
+	/// Total holdings forecast for Jun 2024, as a label (£m)
+	measure 'Holdings Jun-24' =
+			VAR _total =
+			    CALCULATE(SUM('Holdings forecast'[total]), 'Holdings forecast'[month] = DATE(2024, 6, 1))
+			RETURN
+			    FORMAT(_total / 1000000, "£#,0.0") & "m"
+		displayFolder: Forecast
+		lineageTag: 167a0c82-9ddb-486d-b8a7-69378137e54a
+
+	/// Assets share of holdings in Jun 2024 (forecast)
+	measure 'Assets Share Jun-24' = CALCULATE([Assets Share %], 'Holdings forecast'[month] = DATE(2024, 6, 1))
+		formatString: 0.0%;-0.0%;0.0%
+		displayFolder: Forecast
+		lineageTag: a6bb54ef-3307-4680-ad85-c7a67bf9d4c3
+
+	/// Customer count as a label, so the KPI card shows 10,000 rather than 10K
+	measure 'Total Customers (label)' = FORMAT([Total Customers], "#,0")
+		displayFolder: Overview
+		lineageTag: 2444742f-32a4-4c20-a03a-fb74ad3bda1f
+
+	/// Whole-base forecast as a label, so the KPI card shows the full number
+	measure 'Whole Base Jan-25 (label)' = FORMAT([Whole Base Jan-25], "#,0")
+		displayFolder: Forecast
+		lineageTag: f4f4108e-8239-4ab7-83bc-1e63720e48b1
+
+	partition _Measures = m
+		mode: import
+		source =
+				let
+				    Source = Table.FromRows(Json.Document(Binary.Decompress(Binary.FromText("i44FAA==", BinaryEncoding.Base64), Compression.Deflate)), let _t = ((type nullable text) meta [Serialized.Text = true]) in type table [Column1 = _t]),
+				    #"Changed Type" = Table.TransformColumnTypes(Source,{{"Column1", type text}}),
+				    #"Removed Columns" = Table.RemoveColumns(#"Changed Type",{"Column1"})
+				in
+				    #"Removed Columns"
+
+	annotation PBI_ResultType = Table
+

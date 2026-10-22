@@ -1,0 +1,96 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.14.0/schema.json",
+  "name": "9722d0219fea53e038ef",
+  "position": {
+    "x": 40,
+    "y": 770,
+    "z": 5000,
+    "height": 245,
+    "width": 1100,
+    "tabOrder": 5000
+  },
+  "visual": {
+    "visualType": "textbox",
+    "objects": {
+      "general": [
+        {
+          "properties": {
+            "paragraphs": [
+              {
+                "textRuns": [
+                  {
+                    "value": "How the forecast works",
+                    "textStyle": {
+                      "fontSize": "16pt",
+                      "color": "#163300",
+                      "fontWeight": "bold"
+                    }
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "•  Each signup month's conversion curve is projected forward with age-to-age growth factors from older cohorts (chain-ladder).",
+                    "textStyle": {
+                      "fontSize": "14pt",
+                      "color": "#2A3324"
+                    }
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "•  Scenarios differ only after month 12, where there is no data: growth fades fast (0.7), gradually (0.9, base) or not at all (1.0).",
+                    "textStyle": {
+                      "fontSize": "14pt",
+                      "color": "#2A3324"
+                    }
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "•  The scenario selector scales new-investor growth after Jan 2024 in the base case, e.g. +20% means 20% more new investors.",
+                    "textStyle": {
+                      "fontSize": "14pt",
+                      "color": "#2A3324"
+                    }
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "•  Holdings = number of holders x balance per holder, scaled from the sample to all Jan-Jun 2023 joiners (x38).",
+                    "textStyle": {
+                      "fontSize": "14pt",
+                      "color": "#2A3324"
+                    }
+                  }
+                ]
+              }
+            ]
+          }
+        }
+      ]
+    },
+    "visualContainerObjects": {
+      "title": [
+        {
+          "properties": {
+            "show": {
+              "expr": {
+                "Literal": {
+                  "Value": "false"
+                }
+              }
+            }
+          }
+        }
+      ]
+    }
+  }
+}

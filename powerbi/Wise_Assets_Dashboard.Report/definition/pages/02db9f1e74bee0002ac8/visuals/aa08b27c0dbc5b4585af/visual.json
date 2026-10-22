@@ -1,0 +1,85 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.14.0/schema.json",
+  "name": "aa08b27c0dbc5b4585af",
+  "position": {
+    "x": 1440.8281545754535,
+    "y": 629.847736142984,
+    "z": 7000,
+    "height": 358.14871270875557,
+    "width": 438.42342417795942,
+    "tabOrder": 7000
+  },
+  "visual": {
+    "visualType": "textbox",
+    "objects": {
+      "general": [
+        {
+          "properties": {
+            "paragraphs": [
+              {
+                "textRuns": [
+                  {
+                    "value": "What stands out",
+                    "textStyle": {
+                      "fontWeight": "bold",
+                      "fontSize": "16pt",
+                      "color": "#163300"
+                    }
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "•  Funding is the real gate: 41% of signups never top up, and all 225 investors funded first.",
+                    "textStyle": {
+                      "fontSize": "14pt",
+                      "color": "#2a3324"
+                    }
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "•  Among funded customers, 3.8% invest, versus 2.25% of all signups.",
+                    "textStyle": {
+                      "fontSize": "14pt",
+                      "color": "#2a3324"
+                    }
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "•  Business customers fund far more often (94% vs 52%), which explains most of their higher conversion.",
+                    "textStyle": {
+                      "fontSize": "14pt",
+                      "color": "#2a3324"
+                    }
+                  }
+                ]
+              }
+            ]
+          }
+        }
+      ]
+    },
+    "visualContainerObjects": {
+      "title": [
+        {
+          "properties": {
+            "show": {
+              "expr": {
+                "Literal": {
+                  "Value": "false"
+                }
+              }
+            }
+          }
+        }
+      ]
+    }
+  }
+}

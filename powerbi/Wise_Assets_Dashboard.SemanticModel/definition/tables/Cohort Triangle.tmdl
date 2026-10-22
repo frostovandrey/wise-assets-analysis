@@ -1,0 +1,69 @@
+table 'Cohort Triangle'
+	lineageTag: 78aac782-a731-42c3-a882-c1bd2bee26e3
+
+	column cohort
+		dataType: string
+		lineageTag: 92b93642-6c4b-4cd9-9a50-f57b36c56bb2
+		summarizeBy: none
+		sourceColumn: cohort
+
+		annotation SummarizationSetBy = Automatic
+
+	column age
+		dataType: int64
+		formatString: 0
+		lineageTag: aaeaa3a6-15d0-4082-9af3-219c7690523e
+		summarizeBy: none
+		sourceColumn: age
+
+		annotation SummarizationSetBy = User
+
+	column cohort_size
+		dataType: int64
+		formatString: 0
+		lineageTag: 2d2cf198-0fc3-4b33-bc10-27d7771f1491
+		summarizeBy: sum
+		sourceColumn: cohort_size
+
+		annotation SummarizationSetBy = Automatic
+
+	column new_investors
+		dataType: int64
+		formatString: 0
+		lineageTag: 1a962ce9-1f3c-46a4-a35f-a94bd955118b
+		summarizeBy: sum
+		sourceColumn: new_investors
+
+		annotation SummarizationSetBy = Automatic
+
+	column cum_investors
+		dataType: double
+		lineageTag: 5ace00d8-3fcc-41ea-8101-20eb6ac5d3fd
+		summarizeBy: sum
+		sourceColumn: cum_investors
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column cum_pct
+		dataType: double
+		lineageTag: 16760278-07b7-45b6-b136-21e8ca0bd0ca
+		summarizeBy: sum
+		sourceColumn: cum_pct
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	partition 'Cohort Triangle' = m
+		mode: import
+		source =
+				let
+				    Source = MySQL.Database("localhost:3306", "wise_assets", [ReturnSingleDatabase=true]),
+				    wise_assets_vw_cohort_triangle = Source{[Schema="wise_assets",Item="vw_cohort_triangle"]}[Data]
+				in
+				    wise_assets_vw_cohort_triangle
+
+	annotation PBI_ResultType = Table
+
