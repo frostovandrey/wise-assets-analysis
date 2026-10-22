@@ -10,6 +10,8 @@ It answers three questions:
 
 ![Overview page](images/01_overview.png)
 
+📊 **[Read the 8-slide summary deck (PDF)](presentation/Wise_Assets_Deck.pdf)**
+
 ---
 
 ## The short answer
@@ -105,6 +107,7 @@ SQL used: CTEs (including recursive), window functions (`LAG`, `FIRST_VALUE`, ru
 ├── sql/         01-09 scripts above
 ├── excel/       Wise_Assets_Analysis.xlsx (analysis + forecast model)
 ├── powerbi/     Power BI project (.pbip), opens in Power BI Desktop
+├── presentation/ summary deck (.pptx and .pdf)
 └── images/      dashboard screenshots
 ```
 
