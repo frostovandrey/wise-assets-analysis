@@ -1,5 +1,5 @@
 {
-  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.14.0/schema.json",
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.12.0/schema.json",
   "name": "fe8221af6149ac79ed94",
   "position": {
     "x": 40,
@@ -21,17 +21,17 @@
                   {
                     "value": "Wise Assets  |  ",
                     "textStyle": {
+                      "fontWeight": "bold",
                       "fontSize": "24pt",
-                      "color": "#3F7D20",
-                      "fontWeight": "bold"
+                      "color": "#3f7d20"
                     }
                   },
                   {
                     "value": "Who invests",
                     "textStyle": {
+                      "fontWeight": "bold",
                       "fontSize": "24pt",
-                      "color": "#163300",
-                      "fontWeight": "bold"
+                      "color": "#163300"
                     }
                   }
                 ]
@@ -42,7 +42,7 @@
                     "value": "Cohorts compared at the same age, and the behaviours linked to investing",
                     "textStyle": {
                       "fontSize": "14pt",
-                      "color": "#8A9185"
+                      "color": "#8a9185"
                     }
                   }
                 ]

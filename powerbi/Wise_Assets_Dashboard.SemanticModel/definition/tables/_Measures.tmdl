@@ -76,47 +76,6 @@ table _Measures
 		displayFolder: Cohorts
 		lineageTag: 146caf2e-6a4d-4852-9f79-39e53020caf4
 
-	/// Background colour for the cohort heatmap: pale green to lime to forest green, scaled to the highest cell
-	measure 'Heatmap Colour' =
-			VAR _v = [Cumulative Conversion %]
-			VAR _max =
-			    MAXX(
-			        ALL('Cohort Triangle'),
-			        DIVIDE('Cohort Triangle'[cum_investors], 'Cohort Triangle'[cohort_size])
-			    )
-			VAR _t = DIVIDE(_v, _max)
-			VAR _low = _t <= 0.5
-			VAR _k = IF(_low, _t * 2, (_t - 0.5) * 2)
-			-- three colour stops: #F1F8EA -> #9FE870 -> #163300
-			VAR _r = ROUND(IF(_low, 241 + (159 - 241) * _k, 159 + (22 - 159) * _k), 0)
-			VAR _g = ROUND(IF(_low, 248 + (232 - 248) * _k, 232 + (51 - 232) * _k), 0)
-			VAR _b = ROUND(IF(_low, 234 + (112 - 234) * _k, 112 + (0 - 112) * _k), 0)
-			VAR _hex = "0123456789ABCDEF"
-			RETURN
-			    IF(
-			        ISBLANK(_v),
-			        BLANK(),
-			        "#"
-			            & MID(_hex, INT(_r / 16) + 1, 1) & MID(_hex, MOD(_r, 16) + 1, 1)
-			            & MID(_hex, INT(_g / 16) + 1, 1) & MID(_hex, MOD(_g, 16) + 1, 1)
-			            & MID(_hex, INT(_b / 16) + 1, 1) & MID(_hex, MOD(_b, 16) + 1, 1)
-			    )
-		displayFolder: Cohorts
-		lineageTag: 2b2d8a4b-8fda-42f3-8a34-d91543b53bc7
-
-	/// White text on dark heatmap cells, dark green text on light ones
-	measure 'Heatmap Font Colour' =
-			VAR _v = [Cumulative Conversion %]
-			VAR _max =
-			    MAXX(
-			        ALL('Cohort Triangle'),
-			        DIVIDE('Cohort Triangle'[cum_investors], 'Cohort Triangle'[cohort_size])
-			    )
-			RETURN
-			    IF(ISBLANK(_v), BLANK(), IF(DIVIDE(_v, _max) > 0.6, "#FFFFFF", "#163300"))
-		displayFolder: Cohorts
-		lineageTag: 8ebf0a7c-726a-412f-bccc-c6364b79961b
-
 	/// Selected scenario adjustment (0% when nothing is selected)
 	measure 'Uplift %' = SELECTEDVALUE('Conversion Uplift'[Conversion Uplift], 0)
 		formatString: +0%;-0%;0%
